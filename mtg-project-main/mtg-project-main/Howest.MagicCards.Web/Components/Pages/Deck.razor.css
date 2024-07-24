@@ -1,0 +1,35 @@
+﻿.deck {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap
+}
+
+.card-deck {
+    display: flex;
+    width: 80%;
+    margin-bottom: 0.5rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+    background-color: white;
+}
+
+.card-quantity,
+.card-info{
+    padding: 0.5rem;
+}
+
+.card-quantity p,
+.card-info p {
+    margin: 0;
+}
+
+.card-info {
+    flex: 1;
+}
+
+.add{
+    width: 20%;
+}

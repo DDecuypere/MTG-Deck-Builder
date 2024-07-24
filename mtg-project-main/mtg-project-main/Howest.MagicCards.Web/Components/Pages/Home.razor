@@ -1,0 +1,128 @@
+﻿@page "/"
+@page "/cards"
+@page "/deck"
+@rendermode InteractiveServer
+
+
+<PageTitle>Cards</PageTitle>
+
+<aside class="cards-filters">
+    <EditForm Model="@_filterViewModel" OnValidSubmit="@ShowAllCards" FormName="filter" class="form-group">
+        <DataAnnotationsValidator/>
+        <ValidationSummary />
+
+        <div class="form-filter">
+            <InputText id="card-name" @bind-Value="@_filterViewModel.CardName" class="form-control" placeholder="Card Name"></InputText>
+            <ValidationMessage For="@(() => _filterViewModel.CardName)" />
+        </div>
+        <div class="form-filter">
+            <InputText id="card-text" @bind-Value="@_filterViewModel.CardText" class="form-control" placeholder="Card Text"></InputText>
+            <ValidationMessage For="@(() => _filterViewModel.CardText)" />
+        </div>
+        <div class="form-filter">
+            <InputText id="card-artist" @bind-Value="@_filterViewModel.ArtistName" class="form-control" placeholder="Card Artist"></InputText>
+            <ValidationMessage For="@(() => _filterViewModel.ArtistName)" />
+        </div>
+        <div class="form-filter">
+            <InputText id="card-set" @bind-Value="@_filterViewModel.SetName" class="form-control" placeholder="Card Set"></InputText>
+            <ValidationMessage For="@(() => _filterViewModel.SetName)" />
+        </div>
+        <div class="form-filter">
+            <InputSelect id="card-rarity" @bind-Value="@_filterViewModel.RarityName" class="form-control">
+                <option value="">Card Rarity</option>
+                <option value="Common">Common</option>
+                <option value="Uncommon">Uncommon</option>
+                <option value="Rare">Rare</option>
+                <option value="Mythic">Mythic</option>
+            </InputSelect>
+            <ValidationMessage For="@(() => _filterViewModel.RarityName)" />
+        </div>
+        <div class="form-filter">
+            <InputText id="card-type" @bind-Value="@_filterViewModel.TypeName" class="form-control" placeholder="Card Type"></InputText>
+            <ValidationMessage For="@(() => _filterViewModel.TypeName)" />
+        </div>
+        <div class="form-filter">
+            <InputCheckbox id="sort-descending" @bind-Value="@_filterViewModel.IsDescending"/>
+            <label for="sort-descending">Descending</label>
+        </div>
+        <button type="submit" class="btn btn-info">Filter</button>
+    </EditForm>
+</aside>
+
+<div class="cards-group">
+    <div class="cards-body">
+        <div class="pagination">
+            <button class="btn btn-info" @onclick="PreviousPage">Back</button>
+            <p class="current-page">@_currentPage</p>
+            <button class="btn btn-info" @onclick="NextPage">Next</button>
+        </div>
+        <article class="cards">
+            @if (_cards == null)
+            {
+                <p class="alert">@_message</p>
+            }
+            else
+            {
+                <CardList Cards="_cards" OnCardClick="AddCardToDeck"></CardList>
+            }
+
+        </article>
+    </div>
+    <div class="deck-body">
+        <button class="clear btn-info" @onclick="@(() => ClearDeck())">Clear</button>
+        <p>Count : @(_cardsInDeck.Sum(card => card.Quantity))</p>
+        @if (_cardsInDeck == null)
+        {
+            <p class="alert">@_message</p>
+        }
+        else
+        {
+            <Deck CardsInDeck="_cardsInDeck" OnDeleteClick="DeleteCardFromDeck" OnAddClick="AddCardToDeck"></Deck>
+        }
+    </div>
+</div>
+
+@if (_message != string.Empty)
+{
+    <div class="modal show" tabindex="-1" role="dialog" style="display: block;">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Error</h5>
+                    <button type="button" class="close" @onclick="@(() => _message = string.Empty)">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    @_message
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<style>
+    .form-group {
+        display: flex;
+        flex-wrap: wrap;
+        margin-bottom: 1rem;
+    }
+
+    .form-control {
+        width: 100%;
+        margin-right: 1rem;
+    }
+
+    .form-filter {
+        margin-bottom: 0.5rem;
+    }
+
+    .btn-info {
+        background-color: #3498db;
+        border-color: #3498db;
+        color: white;
+    }
+    .clear {
+        margin-bottom: 1rem;
+    }
+</style>

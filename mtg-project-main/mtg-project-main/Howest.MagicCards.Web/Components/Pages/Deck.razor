@@ -1,0 +1,16 @@
+﻿<ul class="deck">
+    @foreach (CardInDeckReadDTO card in CardsInDeck)
+    {
+        <span class="add" @onclick="@(() => HandleAddClick(card))">
+            <button>+</button>
+        </span>
+        <li class="card-deck" @onclick="@(() => OnDeleteClick.InvokeAsync(card))">
+            <span class="card-quantity">
+                <p>@card.Quantity</p>
+            </span>
+            <span class="card-info">
+                <p>@card.CardName</p>
+            </span>
+        </li>
+    }
+</ul>

@@ -1,0 +1,21 @@
+﻿@foreach( CardDTO card in Cards)
+{
+    <div class="card" @onclick="@(() => HandleCardClick(card))">
+        <header>
+            <h4>@card.Name</h4>
+            <p>@card.Rarity</p>
+        </header>
+
+        @if (!String.IsNullOrEmpty(card.OriginalImageUrl))
+        {
+            <img src="@card.OriginalImageUrl" alt="Card Image" class="card-image" />
+        }
+
+        <div class="card-body">
+            <p>@card.Type</p>
+            <p>@card.Text</p>
+            <p>@card.Set</p>
+            <p>@card.Artist</p>
+        </div>
+    </div>
+}
